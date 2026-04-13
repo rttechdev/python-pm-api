@@ -12,7 +12,7 @@ from typing import List
 
 from app.db.database import get_db
 from app.models.user import User
-from app.schemas.user import UserCreate, UserResponse
+from app.schemas.user import UserCreate, UserUpdate, UserResponse
 
 from app.core.security import hash_password
 
@@ -90,3 +90,34 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
 
     return user
+
+@router.put("/users/{user_id}", response_model=UserResponse, summary="Update a user")
+def update_user(user_id: int, user_update: UserUpdate, db: Session = Depends(get_db)):
+    """
+    Update an existing user's information.
+
+    This endpoint allows updating the user's name, email, or password.
+    Only the provided fields will be changed.
+
+    Raises:
+        HTTPException: If the user is not found or if the email already exists.
+    """
+    db_user = db.query(User).filter(User.id == user_id).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    if user_update.name is not None:
+        db_user.name = user_update.name
+    if user_update.email is not None:
+        db_user.email = user_update.email
+    if user_update.password is not None:
+        db_user.password = hash_password(user_update.password)
+
+    try:
+        db.commit()
+        db.refresh(db_user)
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=400, detail="Email already registered")
+
+    return db_user

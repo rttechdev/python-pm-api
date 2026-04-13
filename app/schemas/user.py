@@ -5,6 +5,7 @@ This module defines the data models used for API request/response validation
 and serialization. It ensures data integrity and provides automatic validation.
 """
 
+from typing import Optional
 from pydantic import BaseModel, EmailStr, validator
 
 class UserCreate(BaseModel):
@@ -35,6 +36,26 @@ class UserCreate(BaseModel):
         Raises:
             ValueError: If password is too short or too long
         """
+        if len(v.encode()) > 72:
+            raise ValueError('Password cannot be longer than 72 bytes')
+        if len(v) < 8:
+            raise ValueError('Password must be at least 8 characters')
+        return v
+
+class UserUpdate(BaseModel):
+    """
+    Schema for user update requests.
+
+    All fields are optional so that a client can update one or more values.
+    """
+    name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    password: Optional[str] = None
+
+    @validator('password')
+    def password_length(cls, v):
+        if v is None or v == "":
+            return None
         if len(v.encode()) > 72:
             raise ValueError('Password cannot be longer than 72 bytes')
         if len(v) < 8:

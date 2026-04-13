@@ -13,10 +13,12 @@ from app.db.base import Base
 
 # Import models to ensure they're registered with SQLAlchemy
 from app.models import user
+from app.models import organization
 
 # Import API routers
 from app.api import user
 from app.api import auth
+from app.api import organization
 
 # Create the FastAPI application instance
 app = FastAPI()
@@ -26,6 +28,9 @@ app.include_router(user.router)
 
 # Include the authentication router
 app.include_router(auth.router)
+
+# Include the organization router for organization and membership endpoints
+app.include_router(organization.router)
 
 # Create all database tables defined in the models
 # This is done here for development; in production, use migrations
