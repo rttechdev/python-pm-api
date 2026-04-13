@@ -1,0 +1,26 @@
+# Web framework for building APIs
+fastapi
+
+# ASGI server for running FastAPI applications
+uvicorn[standard]
+
+# SQL toolkit and ORM for database operations
+sqlalchemy
+
+# PostgreSQL adapter for SQLAlchemy
+psycopg2-binary
+
+# Data validation and serialization (with email support)
+pydantic[email]
+
+# Email validation library
+email-validator
+
+# Environment variable management
+python-dotenv
+
+# Password hashing utilities (bcrypt)
+passlib[bcrypt]
+
+# JSON Web Token creation and verification
+python-jose[cryptography]
