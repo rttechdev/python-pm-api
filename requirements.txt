@@ -20,7 +20,11 @@ email-validator
 python-dotenv
 
 # Password hashing utilities (bcrypt)
-passlib[bcrypt]
+passlib[bcrypt]==1.7.4
+bcrypt==4.0.1
 
 # JSON Web Token creation and verification
 python-jose[cryptography]
+
+# Task scheduling library for background jobs
+# apscheduler
