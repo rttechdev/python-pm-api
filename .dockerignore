@@ -1,0 +1,44 @@
+# Git
+.git
+.gitignore
+
+# Python compilation and caching
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual Environments
+venv/
+env/
+.venv/
+.env_dir/
+
+# Reports directory (generated files)
+reports/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Keep .env for Docker (we'll handle it properly)
+# .env
+.env.*
+*.pem
+*.key
+
+# IDEs and Editor files
+.vscode/
+.idea/
+*.swp
+*.DS_Store
+
+# Docker (You don't need these inside the image itself)
+Dockerfile
+.dockerignore
