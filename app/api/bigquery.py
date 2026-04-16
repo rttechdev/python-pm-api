@@ -39,16 +39,18 @@ try:
     from google.cloud import bigquery
     from google.api_core.exceptions import GoogleAPIError
 
-    # Set up Google Cloud credentials
-    if GOOGLE_APPLICATION_CREDENTIALS and os.path.exists(GOOGLE_APPLICATION_CREDENTIALS):
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = GOOGLE_APPLICATION_CREDENTIALS
-        try:
-            # Initialize BigQuery client
-            bq_client = bigquery.Client(project=GOOGLE_CLOUD_PROJECT)
-        except Exception as e:
-            print(f"Warning: Failed to initialize BigQuery client: {e}")
-    else:
-        print("Warning: GOOGLE_APPLICATION_CREDENTIALS not set or file not found. BigQuery features will not be available.")
+    # Set up Google Cloud credentials if a service account file path is provided
+    if GOOGLE_APPLICATION_CREDENTIALS:
+        if os.path.exists(GOOGLE_APPLICATION_CREDENTIALS):
+            os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = GOOGLE_APPLICATION_CREDENTIALS
+        else:
+            print(f"Warning: GOOGLE_APPLICATION_CREDENTIALS file not found: {GOOGLE_APPLICATION_CREDENTIALS}. Trying default credentials.")
+
+    # Initialize BigQuery client. On Cloud Run, this will use default credentials if available.
+    try:
+        bq_client = bigquery.Client(project=GOOGLE_CLOUD_PROJECT)
+    except Exception as e:
+        print(f"Warning: Failed to initialize BigQuery client: {e}")
 
 except ImportError:
     print("Warning: Google Cloud BigQuery dependencies not installed")
