@@ -28,3 +28,9 @@ python-jose[cryptography]
 
 # Task scheduling library for background jobs
 # apscheduler
+
+# Google Cloud BigQuery client library
+google-cloud-bigquery
+
+# Google Cloud authentication
+google-auth

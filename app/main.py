@@ -12,25 +12,32 @@ from app.db.database import engine
 from app.db.base import Base
 
 # Import models to ensure they're registered with SQLAlchemy
-from app.models import user
-from app.models import organization
+from app.models import user as user_model
+from app.models import organization as organization_model
 
 # Import API routers
-from app.api import user
+from app.api import user as user_router
 from app.api import auth
-from app.api import organization
+from app.api import organization as organization_router
+from app.api import bigquery
 
 # Create the FastAPI application instance
 app = FastAPI()
 
 # Include the user management router
-app.include_router(user.router)
+app.include_router(user_router.router)
 
 # Include the authentication router
 app.include_router(auth.router)
 
 # Include the organization router for organization and membership endpoints
-app.include_router(organization.router)
+app.include_router(organization_router.router)
+
+# Include the BigQuery analytics router
+app.include_router(bigquery.router, prefix="/api/v1")
+
+# Include the BigQuery ML router
+app.include_router(bigquery.ml_router, prefix="/api/v1")
 
 # Create all database tables defined in the models
 # This is done here for development; in production, use migrations
